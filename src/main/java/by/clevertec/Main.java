@@ -122,7 +122,7 @@ public class Main {
         System.out.println("Faculty with max average assessment in exam1: " + task20(Util.getStudents(), Util.getExaminations()));
 
         System.out.println("\nTask 21: ");
-        task21();
+        task21().forEach((groupNumber, studentCount) -> System.out.printf("%s: %d\n", groupNumber, studentCount));
 
         System.out.println("\nTask 22: ");
         task22();
@@ -148,9 +148,7 @@ public class Main {
 
         return animals.stream()
                 .filter(a -> JAPANESE.equals(a.getOrigin()))
-                .peek(a -> a.setBread(a.getBread().toUpperCase()))
-                .filter(a -> FEMALE.equals(a.getGender()))
-                .map(Animal::toString)
+                .map(a -> (FEMALE.equals(a.getGender())) ? a.getBread().toUpperCase() : a.getBread())
                 .collect(Collectors.toList());
     }
 
@@ -429,13 +427,12 @@ public class Main {
                 .getKey();
     }
 
-    public static void task21() {
+    public static Map<String, Long> task21() {
         List<Student> students = Util.getStudents();
 
         System.out.println("Students amount in groups");
-        students.stream()
-                .collect(Collectors.groupingBy(Student::getGroup, Collectors.counting()))
-                .forEach((faculty, studentsCount) -> System.out.printf("%s: %d\n", faculty, studentsCount));
+        return students.stream()
+                .collect(Collectors.groupingBy(Student::getGroup, Collectors.counting()));
     }
 
     public static void task22() {
